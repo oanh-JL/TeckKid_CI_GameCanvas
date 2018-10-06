@@ -1,6 +1,6 @@
 package base;
 
-import base.Bullet_Children.*;
+
 import base.counter.FrameCounter;
 import base.renderer.AnimationRenderer;
 import tklibs.SpriteUtils;
@@ -8,9 +8,12 @@ import tklibs.SpriteUtils;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Player extends GameObject {
+public class Player extends GameObject implements Physics {
     FrameCounter fireCounter;
+    BoxCollider collider;
+    int Blood=2000;
     public Player() {
+        super();
         ArrayList<BufferedImage> images = SpriteUtils.loadImages(
                 "assets/images/players/straight/0.png",
                 "assets/images/players/straight/1.png",
@@ -22,7 +25,8 @@ public class Player extends GameObject {
         );
         this.renderer = new AnimationRenderer(images);
         this.position = new Vector2D(Settings.START_PLAYER_POSITION_X, Settings.START_PLAYER_POSITION_Y);
-        this.fireCounter = new FrameCounter(10);
+        this.collider=new BoxCollider(32,48);
+         this.fireCounter = new FrameCounter(10);
     }
         @Override
          public void run() {
@@ -52,28 +56,19 @@ public class Player extends GameObject {
 
 
         public void fire() {
-        PlayerBullet bullet=GameObject.create(PlayerBullet.class);
-        bullet.position.set(this.position.x,this.position.y);
+            PlayerBullet bullet1=GameObject.create(PlayerBullet.class);
+            PlayerBullet bullet2=GameObject.create(PlayerBullet.class);
+            PlayerBullet bullet3=GameObject.create(PlayerBullet.class);
 
-            Blue bull1=GameObject.create(Blue.class);
-            bull1.position.set(this.position.x,this.position.y);
+            bullet1.velocity.set(0,-1);
+            bullet2.velocity.set(1,-1);
+            bullet3.velocity.set(-1,-1);
 
-            Green bull2=GameObject.create(Green.class);
-            bull2.position.set(this.position.x,this.position.y);
+            bullet1.position.set(this.position.x,this.position.y);
+            bullet2.position.set(this.position.x,this.position.y);
+            bullet3.position.set(this.position.x,this.position.y);
 
-            Cyan bull3=GameObject.create(Cyan.class);
-            bull3.position.set(this.position.x,this.position.y);
-
-            Pink bull4=GameObject.create(Pink.class);
-            bull4.position.set(this.position.x,this.position.y);
-
-            Red bull5=GameObject.create(Red.class);
-            bull5.position.set(this.position.x,this.position.y);
-
-            White bull6=GameObject.create(White.class);
-            bull6.position.set(this.position.x,this.position.y);
-
-        this.fireCounter.reset();
+            this.fireCounter.reset();
 
     }
         public void move(int translateX,int translateY){
@@ -81,4 +76,9 @@ public class Player extends GameObject {
 
          }
 
+
+    @Override
+    public BoxCollider getBoxCollider() {
+        return this.collider;
+    }
 }
