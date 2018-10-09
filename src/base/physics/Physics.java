@@ -1,6 +1,5 @@
-package base;
+package base.physics;
 
 public interface Physics {
-    //occur crash
     public BoxCollider getBoxCollider();
 }
